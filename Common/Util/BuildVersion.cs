@@ -14,6 +14,17 @@ public static class BuildVersion
         }
     }
 
+    public static string? SourceCommit
+    {
+        get
+        {
+            var assembly = Assembly.GetEntryAssembly() ?? typeof(BuildVersion).Assembly;
+            var value = assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
+                .FirstOrDefault(x => x.Key == "SourceCommit")?.Value;
+            return string.IsNullOrWhiteSpace(value) ? null : value;
+        }
+    }
+
     public static string Normalize(string? value)
     {
         if (string.IsNullOrWhiteSpace(value))

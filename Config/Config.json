@@ -1,11 +1,11 @@
 {
   "HttpServer": {
-    "BindAddress": "0.0.0.0",
+    "BindAddress": "127.0.0.1",
     "PublicAddress": "127.0.0.1",
     "Port": 21500
   },
   "GameServer": {
-    "BindAddress": "0.0.0.0",
+    "BindAddress": "127.0.0.1",
     "PublicAddress": "127.0.0.1",
     "Port": 21000,
     "KcpAliveMs": 45000,
@@ -24,9 +24,7 @@
   "ServerOption": {
     "Language": "EN",
     "FallbackLanguage": "EN",
-    "DefaultPermissions": [
-      "Admin"
-    ],
+    "DefaultPermissions": [],
     "ServerProfile": {
       "Name": "Miku-chan",
       "Uid": 80
@@ -48,8 +46,7 @@
     "PatchPaths": [
       "Patch\\MikuSB-Patch.dll"
     ],
-    "EnableInGameConsole": true,
-    "AutoUpdateInGameConsole": true,
+    "EnableInGameConsole": false,
     "InGameConsoleLoaderPath": "Patch\\MikuSB-InGame-GUI-Console.Loader.dll",
     "Arguments": [
       "-FeatureLevelES31",

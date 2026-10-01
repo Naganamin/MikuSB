@@ -7,7 +7,6 @@ using MikuSB.GameServer.Server.CallGS;
 using MikuSB.GameServer.Server.Packet;
 using MikuSB.Internationalization;
 using MikuSB.MikuSB.Tool;
-using MikuSB.MikuSB.Update;
 using MikuSB.Proto;
 using MikuSB.SdkServer;
 using MikuSB.TcpSharp;
@@ -166,7 +165,7 @@ public class LoaderManager : MikuSB
         // Load the game data
         try
         {
-            await UpdateService.EnsureResourcesPresentAsync();
+            RequiredFileCheck.EnsureResourcesPresent();
             Logger.Info(I18NManager.Translate("Server.ServerInfo.LoadingItem", I18NManager.Translate("Word.GameData")));
             ResourceManager.LoadGameData();
         }

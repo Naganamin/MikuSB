@@ -1,5 +1,6 @@
 <Project>
-  <Target Name="GenerateBuildVersionInfo" BeforeTargets="BeforeCompile">
+  <!-- InitializeSourceControlInformation sets SourceRevisionId from git -->
+  <Target Name="GenerateBuildVersionInfo" BeforeTargets="BeforeCompile" DependsOnTargets="InitializeSourceControlInformation">
     <ReadLinesFromFile File="$(MSBuildThisFileDirectory)version.txt">
       <Output TaskParameter="Lines" ItemName="_BuildVersionLines" />
     </ReadLinesFromFile>
@@ -12,7 +13,7 @@
     <WriteLinesToFile
       File="$(IntermediateOutputPath)BuildVersion.g.cs"
       Overwrite="true"
-      Lines="// &lt;auto-generated/&gt;&#x0A;[assembly: System.Reflection.AssemblyInformationalVersionAttribute(&quot;$(_BuildVersion)&quot;)]" />
+      Lines="// &lt;auto-generated/&gt;&#x0A;[assembly: System.Reflection.AssemblyInformationalVersionAttribute(&quot;$(_BuildVersion)&quot;)]&#x0A;[assembly: System.Reflection.AssemblyMetadataAttribute(&quot;SourceCommit&quot;, &quot;$(SourceRevisionId)&quot;)]" />
 
     <ItemGroup>
       <Compile Include="$(IntermediateOutputPath)BuildVersion.g.cs" Visible="false" />

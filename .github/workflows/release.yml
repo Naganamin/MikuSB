@@ -42,7 +42,6 @@ jobs:
           $packageDir = ".\artifacts\package\MikuSB-win-x64"
           New-Item -ItemType Directory -Force -Path $packageDir | Out-Null
           Copy-Item .\artifacts\publish\MikuSB\* $packageDir -Recurse -Force
-          if (-not (Test-Path "$packageDir\MikuSB.Updater.exe")) { throw 'MikuSB.Updater.exe was not bundled into the publish output.' }
           Copy-Item .\version.txt $packageDir -Force
           Compress-Archive -Path "$packageDir\*" -DestinationPath .\artifacts\MikuSB-win-x64.zip -Force
           $hash = (Get-FileHash .\artifacts\MikuSB-win-x64.zip -Algorithm SHA256).Hash.ToLowerInvariant()

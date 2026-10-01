@@ -28,8 +28,7 @@ public class MikuSB
         IConsole.InitConsole();
         LoaderManager.InitConfig();
         ShowAntiScamWarning();
-        if (await UpdateService.TryStartSelfUpdateAsync())
-            return;
+        await UpdateService.CheckUpstreamAsync();
 
         RegisterExitEvent();
         await LoaderManager.InitSdkServer();

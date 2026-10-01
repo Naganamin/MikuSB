@@ -11,12 +11,6 @@ public static class GameLaunchService
     public static int Launch(params string[] extraGameArguments)
     {
         ConfigManager.LoadConfig();
-        if (ConfigManager.Config.Loader.EnableInGameConsole
-            && ConfigManager.Config.Loader.AutoUpdateInGameConsole)
-        {
-            InGameConsoleDownloadService.EnsurePresent();
-        }
-        PatchDownloadService.EnsurePatchPresent();
         var options = LaunchOptions.FromConfig(extraGameArguments);
         return Launch(options);
     }
@@ -289,6 +283,14 @@ public static class GameLaunchService
 
 public sealed class LaunchOptions
 {
+    private static readonly string[] InGameConsoleFileNames =
+    [
+        "nethost.dll",
+        "MikuSB.InGameConsole.dll",
+        "MikuSB.InGameConsole.deps.json",
+        "MikuSB.InGameConsole.runtimeconfig.json"
+    ];
+
     public required string GamePath { get; init; }
     public required IReadOnlyList<string> PatchPaths { get; init; }
     public string? WorkingDirectory { get; init; }
@@ -325,10 +327,18 @@ public sealed class LaunchOptions
         if (patchPaths.Count == 0)
             throw new InvalidOperationException("At least one patch path is required.");
 
-        foreach (var patchPath in patchPaths)
+        var consoleLoaderPath = config.Loader.EnableInGameConsole
+            ? ResolvePath(config.Loader.InGameConsoleLoaderPath, serverBaseDirectory)
+            : null;
+        RequiredFileCheck.EnsurePresent(
+            patchPaths.Where(x => !string.Equals(x, consoleLoaderPath, StringComparison.OrdinalIgnoreCase)),
+            "Patch DLL", RequiredFileCheck.PatchRepository);
+        if (consoleLoaderPath is not null)
         {
-            if (!File.Exists(patchPath))
-                throw new FileNotFoundException("Patch DLL not found.", patchPath);
+            var consoleDirectory = Path.GetDirectoryName(consoleLoaderPath)!;
+            RequiredFileCheck.EnsurePresent(
+                [consoleLoaderPath, ..InGameConsoleFileNames.Select(x => Path.Combine(consoleDirectory, x))],
+                "GUI console files", RequiredFileCheck.InGameConsoleRepository);
         }
 
         var workingDirectory = Path.GetDirectoryName(gamePath);

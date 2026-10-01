@@ -14,7 +14,7 @@ public class ConfigContainer
 
 public class HttpServerConfig
 {
-    public string BindAddress { get; set; } = "0.0.0.0";
+    public string BindAddress { get; set; } = "127.0.0.1";
     public string PublicAddress { get; set; } = "127.0.0.1";
     public int Port { get; set; } = 21500;
     public bool EnableLog { get; set; } = false;
@@ -32,7 +32,7 @@ public class HttpServerConfig
 
 public class GameServerConfig
 {
-    public string BindAddress { get; set; } = "0.0.0.0";
+    public string BindAddress { get; set; } = "127.0.0.1";
     public string PublicAddress { get; set; } = "127.0.0.1";
     public int Port { get; set; } = 21000;
     public int KcpAliveMs { get; set; } = 45000;
@@ -59,7 +59,7 @@ public class ServerOption
 {
     public string Language { get; set; } = "EN";
     public string FallbackLanguage { get; set; } = "EN";
-    public string[] DefaultPermissions { get; set; } = ["Admin"];
+    public string[] DefaultPermissions { get; set; } = [];
     public ServerProfile ServerProfile { get; set; } = new();
     public bool EnableGmMenu { get; set; } = false;
     public bool AutoCreateUser { get; set; } = true;
@@ -94,8 +94,7 @@ public class LoaderOptions
 {
     public string GamePath { get; set; } = "";
     public string[] PatchPaths { get; set; } = [@"Patch\MikuSB-Patch.dll"];
-    public bool EnableInGameConsole { get; set; } = true;
-    public bool AutoUpdateInGameConsole { get; set; } = true;
+    public bool EnableInGameConsole { get; set; } = false;
     public string InGameConsoleLoaderPath { get; set; } = @"Patch\MikuSB-InGame-GUI-Console.Loader.dll";
     public string[] Arguments { get; set; } = ["-FeatureLevelES31", "-channelid=seasun", "-NoSplash"];
     public bool SetAllProxy { get; set; } = true;
